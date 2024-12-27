@@ -1,0 +1,124 @@
+#include <iostream>
+#include <iomanip>
+#include <vector>
+
+using namespace std;
+
+// ATM class to handle all functionalities
+class ATM {
+private:
+    int pin;
+    double balance;
+
+public:
+    // Constructor to initialize ATM with default pin and balance
+    ATM(int initialPin = 1122, double initialBalance = 1000.00) {
+        pin = initialPin;
+        balance = initialBalance;
+    }
+
+    // Function to check if the entered PIN is correct
+    bool verifyPin(int enteredPin) {
+        return pin == enteredPin;
+    }
+
+    // Function to display current balance
+    void checkBalance() {
+        cout << "\nYour current balance is: Rs " << fixed << setprecision(2) << balance << endl;
+    }
+
+    // Function to deposit money
+    void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            cout << "\nDeposit successful. New balance: Rs " << fixed << setprecision(2) << balance << endl;
+        } else {
+            cout << "\nInvalid deposit amount!" << endl;
+        }
+    }
+
+    // Function to withdraw money
+    void withdraw(double amount) {
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+            cout << "\nWithdrawal successful. New balance: Rs " << fixed << setprecision(2) << balance << endl;
+        } else {
+            cout << "\nInsufficient balance or invalid withdrawal amount!" << endl;
+        }
+    }
+
+    // Function to change the PIN
+    void changePin(int oldPin, int newPin) {
+        cout<<"Enter old PIN:";
+        cin>>oldPin;
+
+        if(pin!=oldPin){
+            cout<<"\nInvalid pin. Try again \n";
+        }
+        else{
+            cout<<"\nEnter new PIN:";
+            cin>>newPin;
+            pin = newPin;
+            cout << "\nPIN changed successfully!\n" << endl;
+            }
+    }
+};
+
+// Main function to simulate ATM operations
+int main() {
+    ATM atm;  // Create an ATM object
+    int enteredPin;
+    int choice;
+    double amount;
+
+    // User login attempt
+    cout << "Welcome to the ATM!\n";
+    cout << "Please enter your PIN: ";
+    cin >> enteredPin;
+
+    // Verify PIN
+    if (!atm.verifyPin(enteredPin)) {
+        cout << "Invalid PIN! Exiting...\n";
+        return 0;
+    }
+
+    do {
+        // Display menu
+        cout << "\n ATM Menu:\n";
+        cout << "1. Check Balance\n";
+        cout << "2. Deposit Money\n";
+        cout << "3. Withdraw Money\n";
+        cout << "4. Change PIN\n";
+        cout << "5. Exit\n";
+        cout << "Please choose an option (1-5): ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                atm.checkBalance();
+                break;
+            case 2:
+                cout << "\nEnter the amount to deposit: Rs ";
+                cin >> amount;
+                atm.deposit(amount);
+                break;
+            case 3:
+                cout << "\nEnter the amount to withdraw: Rs ";
+                cin >> amount;
+                atm.withdraw(amount);
+                break;
+            case 4:
+                int oldPin,newPin;
+                atm.changePin(oldPin,newPin);
+                break;
+            case 5:
+                cout << "\nThank you for using the ATM. Goodbye!\n";
+                break;
+            default:
+                cout << "\nInvalid option! Please try again.\n";
+                break;
+        }
+    } while (choice != 5);  // Keep the menu active until user chooses to exit
+
+    return 0;
+}
